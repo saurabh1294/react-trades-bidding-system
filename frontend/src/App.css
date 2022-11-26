@@ -1,12 +1,9 @@
-.App {
-  text-align: center;
+.create-post-btn{
+  background-color: #050505 !important;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.text-white{
+  color: white !important;
 }
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
