@@ -52,7 +52,10 @@ ESLINT_NO_DEV_ERRORS=true
 
 DISABLE_ESLINT_PLUGIN=true
 
+
+
 In the backend folder create a .env file with below contents
+
 DB_HOST=127.0.0.1
 
 DB_USER=root
