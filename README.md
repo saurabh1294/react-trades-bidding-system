@@ -48,13 +48,32 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Env files
 In the frontend folder create a .env file with below contents
 ESLINT_NO_DEV_ERRORS=true
+
 DISABLE_ESLINT_PLUGIN=true
 
 In the backend folder create a .env file with below contents
 DB_HOST=127.0.0.1
+
 DB_USER=root
+
 DB_PASSWORD=
+
 DB_NAME=tradeBidding
+
 DB_PORT=3306
+
 PORT=4000
+
+## Running the app
+Make sure you have node v16 or later installed and in frontend/ and backend/ folders do a yarn or npm install
+Install mysql workbench or SQL command line and create a database called tradeBidding in it.
+Run the backend using command yarn start and run the frontend using the same command as well
+
+## Known issues/improvements
+1. There is an issue with the job which runs and marks the listings as expired/shows the bid winner and hence thats logic is taken off for now
+2. The bidders list is updated via setInterval calls which isn't ideal. Best way to use a PubSub mechanism using socket.io to refresh the bidders list in realtime
+3. UI is very crude and needs to be fine tuned
+4. Currently there is no authentication implemented for job poster role and bidder role
+5. To handle concurrency and load balancing, we either can use AWS ELB if deploying this app to an AWS EC2 instance or another possible way could be
+have this app running in a docker container by defining docker-compose.yml and either use docker swarm or AWS ECS/Kubernetes using the respective load balancers
 
