@@ -21,7 +21,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, "/Users/saurabhgattani/Projects/CIS_final/react-bidding-system/frontend/public/uploads");
+    cb(null, "/Users/saurabhgattani/Projects/intuit/react-trades-bidding-system/frontend/public/uploads");
   },
   filename: function (req: any, file: any, cb: any) {
     cb(null, Date.now() + "-" + file.originalname);
