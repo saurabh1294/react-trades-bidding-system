@@ -47,6 +47,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Env files
 In the frontend folder create a .env file with below contents
+
 ESLINT_NO_DEV_ERRORS=true
 
 DISABLE_ESLINT_PLUGIN=true
