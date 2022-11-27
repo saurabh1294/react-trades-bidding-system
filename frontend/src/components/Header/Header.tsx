@@ -100,7 +100,7 @@ export default function Header() {
           >
           </IconButton>
           <Typography
-            variant="h6"  
+            variant="h4"  
             noWrap
             component="div"
             sx={{ display: { xs: "block", sm: "block" } }}
@@ -109,6 +109,36 @@ export default function Header() {
               TradesBidder
             </Link>
           </Typography>
+    <div className="mt-1 ml-10 gap-40 flex text-center snap-end text text-sm ...">
+    <Typography
+            variant="h6"  >
+            <Link to="/">
+              Home
+            </Link>
+          </Typography>
+
+          <Typography
+            variant="h6"  >
+            <Link to="/">
+              About
+            </Link>
+          </Typography>
+
+          <Typography
+            variant="h6"  >
+            <Link to="/">
+              Contact
+            </Link>
+          </Typography>
+
+          <Typography
+            variant="h6"  >
+            <Link to="/">
+              Product
+            </Link>
+          </Typography>
+    </div>
+         
          
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "flex", md: "flex" } }}>

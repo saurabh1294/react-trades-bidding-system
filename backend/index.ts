@@ -21,7 +21,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, "/Users/saurabhgattani/Projects/intuit/react-trades-bidding-system/frontend/public/uploads");
+    cb(null, "/Users/saurabhgattani/Projects/CIS_final/react-bidding-system/frontend/public/uploads");
   },
   filename: function (req: any, file: any, cb: any) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -57,9 +57,9 @@ const upload = multer({
 
 app.get("/api/getProjectbyId/:Project_id", async (req, res) => {
   try {
-    var post = req.params.Project_id;
+    const post = req.params.Project_id;
 
-    var result = await getProjectbyId(post);
+    const result = await getProjectbyId(post);
     res.send({
       message: "Project Details fetched by Id Successfully",
       result: result[0],
@@ -72,7 +72,7 @@ app.get("/api/getProjectbyId/:Project_id", async (req, res) => {
 
 app.get("/api/getProject", async (req, res) => {
   try {
-    var result = await getProject();
+    const result = await getProject();
 
     res.send({
       message: "Project Details fetched Successfully",

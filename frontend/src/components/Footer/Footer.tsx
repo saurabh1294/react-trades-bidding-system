@@ -7,13 +7,11 @@ export default function Footer({ classes }: any) {
     bottom: 0;
     width: 100% !important;
     height: 50px !important ;
-    margin-top:16%;
     background: #1976d2;
-    display: flex;
-  flex-direction: column;
   `;
 
   const FormattedFooter = styled.div`
+    margin-top: 15px;
     color: white;
   `;
 

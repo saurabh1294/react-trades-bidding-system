@@ -37,7 +37,7 @@ const project = (sequelize: Sequelize, Sequelize: any) => {
       },
       createdAt:
       {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
         allowNull: false,
         defaultValue: new Date()
       },
