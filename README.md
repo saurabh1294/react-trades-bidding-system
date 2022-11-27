@@ -44,3 +44,17 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Env files
+In the frontend folder create a .env file with below contents
+ESLINT_NO_DEV_ERRORS=true
+DISABLE_ESLINT_PLUGIN=true
+
+In the backend folder create a .env file with below contents
+DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=tradeBidding
+DB_PORT=3306
+PORT=4000
+
