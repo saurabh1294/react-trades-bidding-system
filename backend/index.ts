@@ -1,12 +1,12 @@
 import express from "express";
 import "dotenv/config";
-import  db,{
+import db, {
   addBidding,
   createProject,
   getBidding,
   getProject,
   getProjectbyId,
-  soldProject,
+  // soldProject,
 } from "./src/models";
 import http from "http";
 const port = process.env.PORT || 4000;
@@ -21,7 +21,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, "/Users/saurabhgattani/Projects/intuit/react-trades-bidding-system/frontend/public/uploads");
+    cb(null, "/var/www/html/poc/frontend/public/uploads");
   },
   filename: function (req: any, file: any, cb: any) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -57,9 +57,9 @@ const upload = multer({
 
 app.get("/api/getProjectbyId/:Project_id", async (req, res) => {
   try {
-    const post = req.params.Project_id;
+    var post = req.params.Project_id;
 
-    const result = await getProjectbyId(post);
+    var result = await getProjectbyId(post);
     res.send({
       message: "Project Details fetched by Id Successfully",
       result: result[0],
@@ -72,7 +72,7 @@ app.get("/api/getProjectbyId/:Project_id", async (req, res) => {
 
 app.get("/api/getProject", async (req, res) => {
   try {
-    const result = await getProject();
+    var result = await getProject();
 
     res.send({
       message: "Project Details fetched Successfully",
@@ -107,8 +107,9 @@ app.post(
   async (req, res) => {
     try {
       const post = JSON.parse(req.body?.data);
+      const expiryDate = req.body.Expiry_Date;
       const image = req.file;
-      const result = await createProject(post, image);
+      const result = await createProject(post, image, expiryDate);
       res.send({
         message: "Project Created Successfully",
         status: true,
@@ -137,27 +138,27 @@ app.post("/api/addBidding/:id", upload.array(""), async (req, res) => {
   }
 });
 
-app.get("/api/soldProject", async (req, res) => {
-  try {
-    const project_Id = req.query.id;
-    const result = await soldProject(project_Id);
-    if (result) {
-      res.send({
-        message: "Project Sold Successfully",
-        status: true,
-        result: result,
-      });
-    } else {
-      res.send({
-        message: "Projects Id not found",
-        status: false,
-        error: Error,
-      });
-    }
-  } catch (error) {
-    res.send({ error: error, status: false });
-  }
-});
+// app.get("/api/soldProject", async (req, res) => {
+//   try {
+//     const project_Id = req.query.id;
+//     const result = await soldProject(project_Id);
+//     if (result) {
+//       res.send({
+//         message: "Project Sold Successfully",
+//         status: true,
+//         result: result,
+//       });
+//     } else {
+//       res.send({
+//         message: "Projects Id not found",
+//         status: false,
+//         error: Error,
+//       });
+//     }
+//   } catch (error) {
+//     res.send({ error: error, status: false });
+//   }
+// });
 
 db.sequelize.sync().then(async () => {
   // fetchig

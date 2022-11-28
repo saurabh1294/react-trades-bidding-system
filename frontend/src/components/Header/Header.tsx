@@ -84,69 +84,54 @@ export default function Header() {
   };
 
   const menuId = "primary-search-account-menu";
- 
+
   const mobileMenuId = "primary-search-account-menu-mobile";
- 
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" >
+      <AppBar position="static">
         <Toolbar className="bg-black">
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-          >
-          </IconButton>
+          ></IconButton> */}
           <Typography
-            variant="h4"  
+            variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "block", sm: "block" } }}
           >
-            <Link to="/">
-              TradesBidder
-            </Link>
+            <Link to="/">TradesBidder</Link>
           </Typography>
-    <div className="mt-1 ml-10 gap-40 flex text-center snap-end text text-sm ...">
-    <Typography
-            variant="h6"  >
-            <Link to="/">
-              Home
-            </Link>
-          </Typography>
+          {/* <div className="mt-1 ml-10 lg:gap-40  flex items-center justify-between text-center   text-sm ">
+            <Typography variant="h6">
+              <Link to="/">Home</Link>
+            </Typography>
 
-          <Typography
-            variant="h6"  >
-            <Link to="/">
-              About
-            </Link>
-          </Typography>
+            <Typography variant="h6">
+              <Link to="/">About</Link>
+            </Typography>
 
-          <Typography
-            variant="h6"  >
-            <Link to="/">
-              Contact
-            </Link>
-          </Typography>
+            <Typography variant="h6">
+              <Link to="/">Contact</Link>
+            </Typography>
 
-          <Typography
-            variant="h6"  >
-            <Link to="/">
-              Product
-            </Link>
-          </Typography>
-    </div>
-         
-         
+            <Typography variant="h6">
+              <Link to="/">Product</Link>
+            </Typography>
+          </div> */}
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "flex", md: "flex" } }}>
             <Button variant="contained" className="h-7">
-                <Link to="/project/create" className="text-white ">create-project</Link>
+              <Link to="/project/create" className="text-white ">
+                create-project
+              </Link>
             </Button>
           </Box>
-         
         </Toolbar>
       </AppBar>
     </Box>

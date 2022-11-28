@@ -28,6 +28,9 @@ const project = (sequelize: Sequelize, Sequelize: any) => {
       cover_Image: {
         type: Sequelize.STRING
       },
+      winnerId:{
+        type: Sequelize.STRING
+      },
       status: {
         type: Sequelize.STRING,
         validate: {
@@ -40,10 +43,11 @@ const project = (sequelize: Sequelize, Sequelize: any) => {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: new Date()
+
       },
       updatedAt:
       {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
         allowNull: false,
         defaultValue: new Date()
       }

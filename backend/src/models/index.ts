@@ -37,7 +37,7 @@ db.bidder = bidder(sequelize, Sequelize);
 export const Bidder = db.bidders;
 
 export const getProjectbyId = async (Id: any) => {
-  const [resultData, metaData] = await sequelize.query(
+  var [resultData, metaData] = await sequelize.query(
     `select * from projects where Project_id='${Id}'`
   );
 
@@ -45,47 +45,130 @@ export const getProjectbyId = async (Id: any) => {
 };
 
 export const getProject = async () => {
-  const [resultData, metaData] = await sequelize.query(`select * from projects`);
-  return resultData;
+  try {
+    return new Promise(async (resolve) => {
+      var [resultData, metaData]: any = await sequelize.query(
+        `select * from projects`
+      );
+      //return resultData;
+      // if(resultData.length>0){
+      console.log("resultData", resultData);
+      let value = [];
+      for (let i = 0; i < resultData.length; i++) {
+        console.log("resultData.length", resultData.length);
+        console.log("resultData.length", resultData[i].Expirey_date);
+       
+
+        var currentDate = new Date();
+        console.log("currentDate", currentDate);
+        var date1 = date.format(currentDate, "YYYY-MM-DD HH mm ");
+        console.log("date1", date1);
+        console.log("resultData[i].Expirey_date",resultData[i].Expirey_date);
+
+        console.log("check condiotion", date1 > resultData[i].Expirey_date);
+
+        if (date1 > resultData[i].Expirey_date) {
+          value.push({ [resultData[i].Project_id]: resultData[i] });
+          console.log("value data", value);
+          var [resultDataBidder, metaData]: any = await sequelize.query(
+            `SELECT projects.*,bidders.bidderId,bidders.Bid_price FROM projects LEFT JOIN bidders ON bidders.Project_id = projects.Project_id where id=${resultData[i].Project_id}`
+          );
+          // console.log("resultDataBidder data", resultDataBidder);
+          // logic
+          // if (resultDataBidder.length > 0) {
+              console.log(`recentDate of `, resultData[i]);
+           
+              var [leastPriceUser, metaData]: any = await sequelize.query(
+                `SELECT
+                id,
+                bidderId,
+                Bid_price,
+                Project_id
+            FROM
+                bidders
+            WHERE
+                Bid_price =(
+                SELECT
+                    MIN(Bid_price) AS Bid_price
+                FROM
+                    bidders
+                WHERE Project_id='${resultData[i].Project_id}'
+) AND Project_id='${resultData[i].Project_id}'`
+              );
+              console.log("leastPriceUser**", leastPriceUser);
+              console.log("leastPriceUser.length ",leastPriceUser.length );
+   
+              if (leastPriceUser.length > 0) {
+                console.log(
+                  "leastPriceUser.bidderId**",
+                  leastPriceUser[0].bidderId
+                );
+                console.log("check 1",date1 > resultData[i].Expirey_date);
+                if (date1 > resultData[i].Expirey_date) {
+                 console.log("check 2",leastPriceUser[0].id != null);
+                  if (leastPriceUser[0].id != null) {
+                    var [updataData, metaData]: any = await sequelize.query(
+                      `update projects SET status='Sold', winnerId='${leastPriceUser[0].bidderId}' where Project_id='${resultData[i].Project_id}'`
+                    );
+                    console.log("updataData", updataData);
+                  } else {
+                    var [updataData, metaData]: any = await sequelize.query(
+                      `update projects SET status='Expire' where Project_id='${resultData[i].Project_id}'`
+                    );
+                    console.log("updataData", updataData);
+                  }
+                }
+              }
+              else {
+                var [updataData, metaData]: any = await sequelize.query(
+                  `update projects SET status='Expire' where Project_id='${resultData[i].Project_id}'`
+                );
+                console.log("updataData", updataData);
+              }
+              
+        //  }
+        }
+    
+      }
+      return resolve(resultData)
+    });
+
+  } catch (error) {
+    return error;
+  }
 };
 
 export const getBidding = async (Id: any) => {
-  const [resultData, metaData] = await sequelize.query(
+  var [resultData, metaData] = await sequelize.query(
     `select * from bidders where Project_id='${Id}'`
   );
   return resultData;
 };
 
-export const createProject = async (data: any, image: any) => {
-  const userId = data.userId;
-  const Project_Name = data.Project_Name;
-  const project_Description = data.project_Description;
-  const Base_price = data.Base_price;
-  const Expirey_date = data.Expirey_date;
-  const cover_Image = image.filename;
-  const [resultData, metaData] = await sequelize.query(
+export const createProject = async (data: any, image: any, expiryDate: any) => {
+  var userId = data.userId;
+  var Project_Name = data.Project_Name;
+  var project_Description = data.project_Description;
+  var Base_price = data.Base_price;
+  var Expirey_date = expiryDate;
+  var cover_Image = image.filename;
+  var [resultData, metaData] = await sequelize.query(
     `insert into projects (UserId,Project_Name,project_Description,Base_price,Expirey_date,cover_Image) Values('${userId}','${Project_Name}','${project_Description}','${Base_price}','${Expirey_date}','${cover_Image}')`
   );
   return resultData;
 };
 
 export const addBidding = async (data: any, Id: any) => {
-  const bidderId = data.userId;
-  const bidding_price = data.bidding_price;
-  const project_Id = Id;
-  const bidDate = new Date();
-  const Bid_date = date.format(bidDate, "YYYY-MM-DD");
-  const [resultData, metaData] = await sequelize.query(
+  var bidderId = data.userId;
+  var bidding_price = data.bidding_price;
+  var project_Id = Id;
+  var bidDate = new Date();
+  var Bid_date = date.format(bidDate, "YYYY-MM-DD");
+  var [resultData, metaData] = await sequelize.query(
     `insert into bidders (bidderId,Bid_price,Project_id,Bid_date) Values('${bidderId}','${bidding_price}','${project_Id}','${Bid_date}')`
   );
-  if (resultData) {
-    const result = await soldProject(project_Id);
-    if (result) {
-      return result;
-    } else {
-      return Error;
-    }
-  }
+ 
+  return resultData;
 };
 
 db.project.hasOne(db.bidder);
@@ -93,107 +176,6 @@ db.bidder.belongsTo(db.project, { foreignKey: db.project.Project_id });
 // Student.hasOne(Question);
 // Question.hasOne(Answer)
 // Contact.belongsTo(Contact);
-
-export const soldProject = async (Id: any) => {
-  try {
-    const project_Id = Id;
-    const [compareDate, metaData]: any = await sequelize.query(
-      `select * from projects where Project_id='${project_Id}'`
-    );
-    if (compareDate[0].Expirey_date) {
-  
-      const datePlus = new Date(compareDate[0].Expirey_date);
-      console.log();
-
-      datePlus.setDate(datePlus.getDate() + 1);
-
-
-
-      const dateExpiry = date.format(datePlus, "YYYY-MM-DD");
-
-      
-      const currentDate = new Date();
-      console.log("currentDate", currentDate);
-      const date1 = date.format(currentDate, "YYYY-MM-DD");
-      if (date1 == dateExpiry) {
-        const [resultData, metaData]: any = await sequelize.query(
-          `SELECT projects.*,bidders.bidderId,bidders.Bid_price FROM projects LEFT JOIN bidders ON bidders.Project_id = projects.Project_id where id=${project_Id}`
-        );
-        if (resultData.length > 0) {
-          console.log("resultData.length", resultData.length);
-
-          const [recentDate, metaData]: any =
-            await sequelize.query(`SELECT MAX (Bid_date) AS "Max Date" 
-        FROM bidders;`);
-          console.log("recentDate", recentDate);
-          if (recentDate) {
-            console.log("recentDate", recentDate);
-            const [priceData, metaData]: any = await sequelize.query(
-              `SELECT MIN(Bid_price) FROM bidders WHERE Project_id='${project_Id}'`
-            );
-            console.log("priceData", priceData);
-            if (priceData) {
-              console.log("priceData**", priceData);
-              const [leastPriceUser, metaData]: any = await sequelize.query(
-                `SELECT
-              bidderId
-          FROM
-              bidders
-          WHERE
-              Bid_price =(
-              SELECT
-                  MIN(Bid_price) AS Bid_price
-              FROM
-                  bidders WHERE Project_id='${project_Id}'
-          )`
-              );
-              console.log("leastPriceUser**", leastPriceUser);
-              if (leastPriceUser) {
-                console.log("leastPriceUser", leastPriceUser);
-                const [updataData, metaData]: any = await sequelize.query(
-                  `update projects SET status='Sold' where Project_id='${project_Id}'`
-                );
-                console.log("updataData", updataData);
-                if (updataData) {
-                  console.log("leastPriceUser**", leastPriceUser);
-                  if (leastPriceUser.length > 0) {
-                    console.log(
-                      "leastPriceUser.bidderId**",
-                      leastPriceUser[0].bidderId
-                    );
-                    let minId = leastPriceUser[0].id;
-                    for (let i = 1; i < priceData.length; i++) {
-                      if (minId < leastPriceUser[i].id) {
-                        return leastPriceUser[0].bidderId;
-                      } else {
-                        minId = leastPriceUser[i].id;
-                      }
-                    }
-                  }
-                }
-                return updataData;
-              } else {
-                return Error;
-              }
-            } else {
-              return Error;
-            }
-          } else {
-            return Error;
-          }
-        } else {
-          return Error;
-        }
-      } else {
-        return Error;
-      }
-    } else {
-      return Error;
-    }
-  } catch (error) {
-    return error;
-  }
-};
 
 
 export default db;
@@ -204,7 +186,7 @@ export default db;
 
 // SELECT MIN(Bid_price) FROM bidders WHERE Project_id=1
 
-// const [priceData, metaData]:any = await sequelize.query(
+// var [priceData, metaData]:any = await sequelize.query(
 //   `select * from bidders where Project_id='${project_Id}'`
 // );
 // if(priceData.length>0)

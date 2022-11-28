@@ -1,20 +1,25 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
+import DateTimePicker from "react-datetime-picker";
+import date from "date-and-time";
 
 export const Project = () => {
   const navigate = useNavigate();
- 
+  const [value, onChange] = useState(new Date());
+
+  const dateformat = date.format(value, "YYYY-MM-DD HH mm ss");
+
   const [project, setProject] = React.useState({
     userId: "",
     Project_Name: "",
     Base_price: "",
     project_Description: "",
-    Expirey_date: "",
     cover_Image: "",
   });
+
   const projectImage = (e: any) => {
     setProject({ ...project, cover_Image: e.target.files[0] });
   };
@@ -23,6 +28,7 @@ export const Project = () => {
     const formData = new FormData();
     formData.append("project_image", project.cover_Image);
     formData.append("data", JSON.stringify(project));
+    formData.append("Expiry_Date", dateformat);
     axios
       .post("http://localhost:4000/api/createProject", formData)
       .then((response) => {
@@ -49,8 +55,8 @@ export const Project = () => {
             <input
               type="email"
               id="title"
-              value={ project.userId }
-              onChange={ (e) =>
+              value={project.userId}
+              onChange={(e) =>
                 setProject({ ...project, userId: e.target.value })
               }
               className="p-2 max-w-[710px] shadow-lg rounded-lg border border-gray-300 focus:outline-none"
@@ -64,8 +70,8 @@ export const Project = () => {
               <input
                 type="text"
                 id="title"
-                value={ project.Project_Name }
-                onChange={ (e) =>
+                value={project.Project_Name}
+                onChange={(e) =>
                   setProject({ ...project, Project_Name: e.target.value })
                 }
                 className="p-2 shadow-lg rounded-lg border border-gray-300 focus:outline-none"
@@ -78,8 +84,8 @@ export const Project = () => {
               <input
                 type="number"
                 id="title"
-                value={ project.Base_price }
-                onChange={ (e) =>
+                value={project.Base_price}
+                onChange={(e) =>
                   setProject({ ...project, Base_price: e.target.value })
                 }
                 className="p-2 shadow-lg rounded-lg border border-gray-300 focus:outline-none"
@@ -92,8 +98,8 @@ export const Project = () => {
               <textarea
                 name=""
                 id=""
-                value={ project.project_Description }
-                onChange={ (e) =>
+                value={project.project_Description}
+                onChange={(e) =>
                   setProject({
                     ...project,
                     project_Description: e.target.value,
@@ -107,29 +113,35 @@ export const Project = () => {
             <div className="flex flex-col space-y-5">
               <div className="flex flex-col">
                 <label htmlFor="title">Project image*</label>
-                <input type="file" onChange={ (e) => projectImage(e) } />
+                <input type="file" onChange={(e) => projectImage(e)} />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="title">Bid End Date*</label>
-                <input
+                <label htmlFor="title">Bid End Data*</label>
+                <DateTimePicker
+                  format={"y-MM-dd HH:mm:ss a"}
+                  onChange={onChange}
+                  value={value}
+           
+                />
+
+                {/* <input
                   type="date"
                   id="title"
-                  min="2022-11-27"
-                  value={ project.Expirey_date }
-                  onChange={ (e) =>
+                  value={project.Expirey_date}
+                  onChange={(e) =>
                     setProject({ ...project, Expirey_date: e.target.value })
                   }
                   className="p-2 shadow-lg rounded-lg border border-gray-300 focus:outline-none"
                   required
                   placeholder="Enter Bid Price"
-                />
+                /> */}
               </div>
             </div>
             <div>
               <button
-                onClick={ (e) => createProject(e) }
+                onClick={(e) => createProject(e)}
                 type="button"
-                className="setTodaysdate mx-auto text-center bg-blue-500 text-white px-8 py-3 rounded-lg"
+                className="mx-auto text-center bg-blue-500 text-white px-8 py-3 rounded-lg"
               >
                 Submit
               </button>
